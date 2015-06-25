@@ -30,14 +30,22 @@ var printIssue = function(fileName, lineNum){
 }
 
 var findFixmes = function(file){
+  // Prepare the grep string for execution (uses BusyBox grep)
   var grepString = "grep -inH -E " + fixmeStrings + " " + file;
 
+  // Execute grep with the FIXME patterns
   exec(grepString, function(error, stdout, stderr) {
+
+    // Parses grep output
     var lines = stdout.split("\n");
     lines.forEach(function(line, index, array){
+
+      // grep spits out an extra line that we can ignore
       if(index < (array.length-1)){
         
         var cols = line.split(":");
+
+        // Remove remnants of container paths for external display
         var fileName = cols[0].split("/code/")[1];
         var lineNum = cols[1];
         
@@ -47,6 +55,8 @@ var findFixmes = function(file){
   })
 }
 
+// Uses glob to traverse code directory and find files to analyze,
+// excluding files passed in with by CLI config
 var fileWalk = function(excludePaths){
   var analysisFiles = [];
   var allFiles = glob.sync("/code/**/**", {});
@@ -60,15 +70,13 @@ var fileWalk = function(excludePaths){
   return analysisFiles;
 }
 
+// Pull engine config from env for exclude files
+var config = JSON.parse(process.env.ENGINE_CONFIG);
 
-var runEngine = function(){
-  var config = JSON.parse(process.env.ENGINE_CONFIG);
+// Walk /code/ path and find files to analyze
+var analysisFiles = fileWalk(config.exclude_paths);
 
-  var analysisFiles = fileWalk(config.exclude_paths);
-
-  analysisFiles.forEach(function(f, i, a){
-    findFixmes(f);
-  });
-}
-
-runEngine();
+// Execute main loop and find fixmes in valid files
+analysisFiles.forEach(function(f, i, a){
+  findFixmes(f);
+});
