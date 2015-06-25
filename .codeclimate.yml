@@ -1,0 +1,5 @@
+engines:
+  fixme:
+    enabled: true
+exclude_paths:
+- "**/*.md"
