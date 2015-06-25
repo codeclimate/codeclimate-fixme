@@ -10,7 +10,7 @@
 
 These strings are things you should fix now, not later.
 
-`codecilmate-fixme` is also very simple, and is intended to provide a `Hello World` like template for Code Climate Platform engine authors. It is implemented in JavaScript as an NPM package.
+`codeclimate-fixme` is also very simple, and is intended to provide a `Hello World` like template for Code Climate Platform engine authors. It is implemented in JavaScript as an NPM package.
 
 ### Installation & Usage
 
