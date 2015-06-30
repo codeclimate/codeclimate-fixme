@@ -9,11 +9,11 @@ var fixmeStrings = "'FIXME|TODO|HACK|BUG'";
 
 // Prints properly structured Issue data to STDOUT according to
 // Code Climate Engine specification.
-var printIssue = function(fileName, lineNum){
+var printIssue = function(fileName, lineNum, issue){
   var issue = {
     "type": "issue",
     "check_name": "FIXME found",
-    "description": "Code comment found that needs your attention.",
+    "description": issue + " found",
     "categories": ["Bug Risk"],
     "location":{
       "path": fileName,
@@ -31,7 +31,7 @@ var printIssue = function(fileName, lineNum){
 
 var findFixmes = function(file){
   // Prepare the grep string for execution (uses BusyBox grep)
-  var grepString = "grep -inH -E " + fixmeStrings + " " + file;
+  var grepString = "grep -inHo -E " + fixmeStrings + " " + file;
 
   // Execute grep with the FIXME patterns
   exec(grepString, function(error, stdout, stderr) {
@@ -48,8 +48,9 @@ var findFixmes = function(file){
         // Remove remnants of container paths for external display
         var fileName = cols[0].split("/code/")[1];
         var lineNum = cols[1];
-        
-        printIssue(fileName, lineNum);
+        var issue = cols[2];
+
+        printIssue(fileName, lineNum, issue);
       }
     })
   })
