@@ -4,7 +4,6 @@
 
 * `TODO`
 * `FIXME`
-* `XXX`
 * `HACK`
 * `BUG`
 
