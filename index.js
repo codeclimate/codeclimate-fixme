@@ -1,12 +1,12 @@
 var glob = require('glob');
-var exec = require('child_process').exec;
+var exec = require('child_process').execSync;
 var fs = require('fs');
 
 module.exports = FixMe;
 function FixMe() { }
 
 // Strings to scan for in source
-var fixmeStrings = "'FIXME|TODO|HACK|XXX|BUG'";
+var fixmeStrings = "'(FIXME|TODO|HACK|XXX|BUG)|?:'";
 
 // Prints properly structured Issue data to STDOUT according to
 // Code Climate Engine specification.
@@ -32,29 +32,29 @@ var printIssue = function(fileName, lineNum, matchedString){
 
 var findFixmes = function(file){
   // Prepare the grep string for execution (uses BusyBox grep)
-  var grepString = "grep -inwHoE " + fixmeStrings + " " + file;
+  var grepString = "grep -inHwoE " + fixmeStrings + " " + file;
 
   // Execute grep with the FIXME patterns
-  exec(grepString, function(error, stdout, stderr) {
+  var results = exec(grepString);
 
-    // Parses grep output
-    var lines = stdout.split("\n");
-    lines.forEach(function(line, index, array){
+  // Parses grep output
+  var lines = results.toString().split("\n");
+  
+  lines.forEach(function(line, index, array){
+    // grep spits out an extra line that we can ignore
+    if(index < (array.length-1)){
+      
+      var cols = line.split(":");
 
-      // grep spits out an extra line that we can ignore
-      if(index < (array.length-1)){
-        
-        var cols = line.split(":");
+      // Remove remnants of container paths for external display
+      var fileName = cols[0].split("/code/")[1];
+      var lineNum = cols[1];
+      var matchedString = cols[2];
 
-        // Remove remnants of container paths for external display
-        var fileName = cols[0].split("/code/")[1];
-        var lineNum = cols[1];
-        var matchedString = cols[2];
-
-        printIssue(fileName, lineNum, matchedString);
-      }
-    })
+      printIssue(fileName, lineNum, matchedString);
+    }
   })
+  
 }
 
 // Uses glob to traverse code directory and find files to analyze,
@@ -65,7 +65,9 @@ var fileWalk = function(excludePaths){
 
   allFiles.forEach(function(file, i, a){
     if(excludePaths.indexOf(file.split("/code/")[1]) < 0) {
-      analysisFiles.push(file);
+      if(!fs.lstatSync(file).isDirectory()){
+        analysisFiles.push(file);
+      }
     }
   });
     
