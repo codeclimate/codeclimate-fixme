@@ -32,7 +32,7 @@ var printIssue = function(fileName, lineNum, matchedString){
 
 var findFixmes = function(file){
   // Prepare the grep string for execution (uses BusyBox grep)
-  var grepString = "grep -inHo -E " + fixmeStrings + " " + file;
+  var grepString = "grep -inwHoE " + fixmeStrings + " " + file;
 
   // Execute grep with the FIXME patterns
   exec(grepString, function(error, stdout, stderr) {
