@@ -1,11 +1,12 @@
 var glob = require('glob');
 var exec = require('child_process').exec;
+var fs = require('fs');
 
 module.exports = FixMe;
 function FixMe() { }
 
 // Strings to scan for in source
-var fixmeStrings = "'FIXME|TODO|HACK|BUG'";
+var fixmeStrings = "'FIXME|TODO|HACK|XXX|BUG'";
 
 // Prints properly structured Issue data to STDOUT according to
 // Code Climate Engine specification.
@@ -73,10 +74,10 @@ var fileWalk = function(excludePaths){
 
 FixMe.prototype.runEngine = function(){
   // Pull engine config from env for exclude files
-  var config = JSON.parse(process.env.ENGINE_CONFIG);
+  var engineConfig = JSON.parse(fs.readFileSync("/config.json"));
 
   // Walk /code/ path and find files to analyze
-  var analysisFiles = fileWalk(config.exclude_paths);
+  var analysisFiles = fileWalk(engineConfig.exclude_paths);
 
   // Execute main loop and find fixmes in valid files
   analysisFiles.forEach(function(f, i, a){
