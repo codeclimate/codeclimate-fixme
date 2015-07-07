@@ -1,12 +1,12 @@
 var glob = require('glob');
-var exec = require('child_process').execSync;
+var exec = require('child_process').exec;
 var fs = require('fs');
 
 module.exports = FixMe;
 function FixMe() { }
 
 // Strings to scan for in source
-var fixmeStrings = "'(FIXME|TODO|HACK|XXX|BUG)|?:'";
+var fixmeStrings = "'(FIXME|TODO|HACK|XXX|BUG)'";
 
 // Prints properly structured Issue data to STDOUT according to
 // Code Climate Engine specification.
@@ -35,26 +35,29 @@ var findFixmes = function(file){
   var grepString = "grep -inHwoE " + fixmeStrings + " " + file;
 
   // Execute grep with the FIXME patterns
-  var results = exec(grepString);
+  exec(grepString, function (error, stdout, stderr) {
+    var results = stdout.toString();
 
-  // Parses grep output
-  var lines = results.toString().split("\n");
-  
-  lines.forEach(function(line, index, array){
-    // grep spits out an extra line that we can ignore
-    if(index < (array.length-1)){
+    if (results !== ""){
+      // Parses grep output
+      var lines = results.split("\n");
       
-      var cols = line.split(":");
+      lines.forEach(function(line, index, array){
+        // grep spits out an extra line that we can ignore
+        if(index < (array.length-1)){
+          // Grep output is colon delimited
+          var cols = line.split(":");
 
-      // Remove remnants of container paths for external display
-      var fileName = cols[0].split("/code/")[1];
-      var lineNum = cols[1];
-      var matchedString = cols[2];
+          // Remove remnants of container paths for external display
+          var fileName = cols[0].split("/code/")[1];
+          var lineNum = cols[1];
+          var matchedString = cols[2];
 
-      printIssue(fileName, lineNum, matchedString);
+          printIssue(fileName, lineNum, matchedString);
+        }
+      })
     }
   })
-  
 }
 
 // Uses glob to traverse code directory and find files to analyze,
@@ -75,11 +78,17 @@ var fileWalk = function(excludePaths){
 }
 
 FixMe.prototype.runEngine = function(){
-  // Pull engine config from env for exclude files
-  var engineConfig = JSON.parse(fs.readFileSync("/config.json"));
+
+  // Check for existence of config.json, parse exclude paths if it exists
+  if (fs.existsSync("/config.json")) {
+    var engineConfig = JSON.parse(fs.readFileSync("/config.json"));
+    var excludePaths = engineConfig.exclude_paths;
+  } else {
+    var excludePaths = [];
+  }
 
   // Walk /code/ path and find files to analyze
-  var analysisFiles = fileWalk(engineConfig.exclude_paths);
+  var analysisFiles = fileWalk(excludePaths);
 
   // Execute main loop and find fixmes in valid files
   analysisFiles.forEach(function(f, i, a){
