@@ -1,12 +1,15 @@
 var glob = require('glob');
 var exec = require('child_process').exec;
 var fs = require('fs');
+var path = require('path');
 
 module.exports = FixMe;
 function FixMe() { }
 
 // Strings to scan for in source
 var fixmeStrings = "'(FIXME|TODO|HACK|XXX|BUG)'";
+
+var excludeExtensions = [".jpg", ".jpeg", ".png", ".gif"];
 
 // Prints properly structured Issue data to STDOUT according to
 // Code Climate Engine specification.
@@ -53,11 +56,19 @@ var findFixmes = function(file){
           var lineNum = cols[1];
           var matchedString = cols[2];
 
-          printIssue(fileName, lineNum, matchedString);
+          if (matchedString !== undefined){
+            printIssue(fileName, lineNum, matchedString);
+          }
         }
       })
     }
   })
+}
+
+var eligibleFile = function(fp, excludePaths){
+  return (excludePaths.indexOf(fp.split("/code/")[1]) < 0) &&
+  !fs.lstatSync(fp).isDirectory() &&
+  (excludeExtensions.indexOf(path.extname(fp)) < 0)
 }
 
 // Uses glob to traverse code directory and find files to analyze,
@@ -67,10 +78,8 @@ var fileWalk = function(excludePaths){
   var allFiles = glob.sync("/code/**/**", {});
 
   allFiles.forEach(function(file, i, a){
-    if(excludePaths.indexOf(file.split("/code/")[1]) < 0) {
-      if(!fs.lstatSync(file).isDirectory()){
-        analysisFiles.push(file);
-      }
+    if(eligibleFile(file, excludePaths)){
+      analysisFiles.push(file);
     }
   });
     
@@ -78,7 +87,6 @@ var fileWalk = function(excludePaths){
 }
 
 FixMe.prototype.runEngine = function(){
-
   // Check for existence of config.json, parse exclude paths if it exists
   if (fs.existsSync("/config.json")) {
     var engineConfig = JSON.parse(fs.readFileSync("/config.json"));
