@@ -32,7 +32,7 @@ var printIssue = function(fileName, lineNum, matchedString){
 
 var findFixmes = function(file){
   // Prepare the grep string for execution (uses BusyBox grep)
-  var grepString = "grep -iInHwoE '(" + fixmeStrings.join("|") + ")' " + file;
+  var grepString = "grep -d skip -iInHwoE '(" + fixmeStrings.join("|") + ")' " + file;
 
   // Execute grep with the FIXME patterns
   exec(grepString, function (error, stdout, stderr) {
@@ -43,16 +43,15 @@ var findFixmes = function(file){
       var lines = results.split("\n");
       
       lines.forEach(function(line, index, array){
-        // grep spits out an extra line that we can ignore
-        if(index < (array.length-1)){
-          // Grep output is colon delimited
-          var cols = line.split(":");
+        // Grep output is colon delimited
+        var cols = line.split(":");
 
-          // Remove remnants of container paths for external display
-          var fileName = cols[0].split("/code/")[1];
-          var lineNum = cols[1];
-          var matchedString = cols[2];
+        // Remove remnants of container paths for external display
+        var fileName = cols[0].split("/code/")[1];
+        var lineNum = cols[1];
+        var matchedString = cols[2];
 
+        if (matchedString !== undefined){
           printIssue(fileName, lineNum, matchedString);
         }
       })
