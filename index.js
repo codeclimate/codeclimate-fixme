@@ -6,7 +6,7 @@ module.exports = FixMe;
 function FixMe() { }
 
 // Strings to scan for in source
-var fixmeStrings = "'(FIXME|TODO|HACK|XXX|BUG)'";
+var fixmeStrings = ["FIXME", "TODO", "HACK", "XXX", "BUG"];
 
 // Prints properly structured Issue data to STDOUT according to
 // Code Climate Engine specification.
@@ -32,7 +32,7 @@ var printIssue = function(fileName, lineNum, matchedString){
 
 var findFixmes = function(file){
   // Prepare the grep string for execution (uses BusyBox grep)
-  var grepString = "grep -iInHwoE " + fixmeStrings + " " + file;
+  var grepString = "grep -iInHwoE '(" + fixmeStrings.join("|") + ")' " + file;
 
   // Execute grep with the FIXME patterns
   exec(grepString, function (error, stdout, stderr) {
