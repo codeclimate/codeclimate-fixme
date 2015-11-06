@@ -1,0 +1,11 @@
+{
+  "name": "fixme",
+  "description": "Discover lurking FIXMEs, BUGs, TODOs, etc. in your code",
+  "maintainer": {
+    "name": "Michael R. Bernstein",
+    "email": "mrb@codeclimate.com"
+  },
+  "test_paths": [
+    "/usr/src/app/test/integration/"
+  ]
+}
