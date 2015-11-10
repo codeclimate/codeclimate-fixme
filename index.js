@@ -16,14 +16,14 @@ var excludeExtensions = [".jpg", ".jpeg", ".png", ".gif"];
 var printIssue = function(fileName, lineNum, matchedString){
   var issue = {
     "type": "issue",
-    "check_name": "FIXME found",
+    "check_name": matchedString,
     "description": matchedString + " found",
     "categories": ["Bug Risk"],
     "location":{
       "path": fileName,
       "lines": {
         "begin": lineNum,
-        "end": lineNum 
+        "end": lineNum
       }
     }
   };
@@ -44,7 +44,7 @@ var findFixmes = function(file){
     if (results !== ""){
       // Parses grep output
       var lines = results.split("\n");
-      
+
       lines.forEach(function(line, index, array){
         // grep spits out an extra line that we can ignore
         if(index < (array.length-1)){
@@ -57,7 +57,7 @@ var findFixmes = function(file){
           var matchedString = cols[2];
 
           if (matchedString !== undefined){
-            printIssue(fileName, lineNum, matchedString);
+            printIssue(fileName, parseInt(lineNum), matchedString);
           }
         }
       })
@@ -82,7 +82,7 @@ var fileWalk = function(excludePaths){
       analysisFiles.push(file);
     }
   });
-    
+
   return analysisFiles;
 }
 
