@@ -65,39 +65,67 @@ var findFixmes = function(file){
   })
 }
 
-var eligibleFile = function(fp, excludePaths){
-  return (excludePaths.indexOf(fp.split("/code/")[1]) < 0) &&
-  !fs.lstatSync(fp).isDirectory() &&
-  (excludeExtensions.indexOf(path.extname(fp)) < 0)
+// Returns an array of unique array values not included in the other provided array
+var diff = function(a1, a2) {
+  var result = [];
+
+  for (var i = 0; i < a1.length; i++) {
+    if (a2.indexOf(a1[i]) === -1) {
+      result.push(a1[i]);
+    }
+
+  }
+  return result;
 }
 
-// Uses glob to traverse code directory and find files to analyze,
-// excluding files passed in with by CLI config
-var fileWalk = function(excludePaths){
-  var analysisFiles = [];
-  var allFiles = glob.sync("/code/**/**", {});
+// Returns all the file paths in the main directory that match the given pattern
+var buildFiles = function(paths) {
+  var files = [];
 
-  allFiles.forEach(function(file, i, a){
-    if(eligibleFile(file, excludePaths)){
-      analysisFiles.push(file);
-    }
+  paths.forEach(function(path, i, a) {
+    var pattern = "/code/" + path + "**"
+    files.push.apply(files, glob.sync(pattern, {}));
+  });
+
+  return files;
+}
+
+// Filters the directory paths out
+var filterFiles = function(files) {
+  return files.filter(function(file) {
+    return !fs.lstatSync(file).isDirectory();
   });
 
   return analysisFiles;
 }
 
+// Returns file paths based on the exclude_paths values in config file
+var buildFilesWithExclusions = function(exclusions) {
+  var allFiles = glob.sync("/code/**/**", {});
+  var excludedFiles = buildFiles(exclusions);
+
+  return diff(allFiles, excludedFiles);
+}
+
+// Returns file paths based on the include_paths values in config file
+var buildFilesWithInclusions = function(inclusions) {
+  return buildFiles(inclusions);
+}
+
 FixMe.prototype.runEngine = function(){
-  // Check for existence of config.json, parse exclude paths if it exists
+  var analysisFiles = []
+
   if (fs.existsSync("/config.json")) {
     var engineConfig = JSON.parse(fs.readFileSync("/config.json"));
-    var excludePaths = engineConfig.exclude_paths;
-  } else {
-    var excludePaths = [];
+
+    if (engineConfig.hasOwnProperty("include_paths")) {
+      analysisFiles = buildFilesWithInclusions(engineConfig.include_paths);
+    } else if (engineConfig.hasOwnProperty("exclude_paths")) {
+      analysisFiles = buildFilesWithExclusions(engineConfig.exclude_paths);
+    }
   }
 
-  // Walk /code/ path and find files to analyze
-  var analysisFiles = fileWalk(excludePaths);
-
+  analysisFiles = filterFiles(analysisFiles);
   // Execute main loop and find fixmes in valid files
   analysisFiles.forEach(function(f, i, a){
     findFixmes(f);
