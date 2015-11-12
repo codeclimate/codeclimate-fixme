@@ -4,7 +4,9 @@ MAINTAINER Michael R. Bernstein
 
 RUN useradd -u 9000 -r -s /bin/false app
 
-RUN npm install glob
+ENV NODE_ENV production
+
+RUN npm install
 
 WORKDIR /code
 COPY . /usr/src/app
