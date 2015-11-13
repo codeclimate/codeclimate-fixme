@@ -8,9 +8,14 @@ machine:
     CODECLIMATE_DOCKER_REGISTRY_USERNAME: circleci
     CODECLIMATE_DOCKER_REGISTRY_EMAIL: ops@codeclimate.com
 
-test:
+dependencies:
   override:
     - docker build -t=$PRIVATE_REGISTRY/$CIRCLE_PROJECT_REPONAME:b$CIRCLE_BUILD_NUM .
+    - npm install
+
+test:
+  override:
+    - npm test
 
 deployment:
   registry:

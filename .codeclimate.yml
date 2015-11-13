@@ -1,8 +1,14 @@
 engines:
   fixme:
+    enabled: false
+  eslint:
     enabled: true
+ratings:
+  paths:
+    - "**.js"
 exclude_paths:
 - "**/*.md"
 - "Dockerfile"
 - "bin/fixme"
-- "index.js"
+- "tests/**"
+- ".codeclimate.yml"
