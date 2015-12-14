@@ -11,4 +11,3 @@ exclude_paths:
 - "Dockerfile"
 - "bin/fixme"
 - "tests/**"
-- ".codeclimate.yml"
