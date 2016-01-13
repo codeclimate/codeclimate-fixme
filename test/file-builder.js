@@ -7,11 +7,6 @@ describe("fileBuilder", function(){
       // expect();
     });
   });
-  describe("#withExcludes(paths)", function(){
-    xit("returns correct files", function(){
-      // expect();
-    });
-  });
   describe("#filterFiles(paths)", function(){
     xit("returns filters out directory paths", function(){
       // expect();
