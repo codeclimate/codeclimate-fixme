@@ -17,6 +17,23 @@ These strings are things you should fix now, not later.
 2. Run `codeclimate engines:enable fixme`. This command both installs the engine and enables it in your `.codeclimate.yml` file.
 3. You're ready to analyze! Browse into your project's folder and run `codeclimate analyze`.
 
+### Configuration
+
+You can specify what strings to match by adding a `strings` key in your
+`.codeclimate.yml`:
+
+```yaml
+engines:
+  fixme:
+    enabled: true
+    strings:
+    - FIXME
+    - CUSTOM
+```
+
+**NOTE**: values specified here *override* the defaults, they are not
+*additional* strings to match.
+
 ### Need help?
 
 For help with `codeclimate-fixme`, please open an issue on this repository.
