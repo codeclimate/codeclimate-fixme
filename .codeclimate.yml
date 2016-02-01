@@ -1,6 +1,10 @@
 engines:
   fixme:
-    enabled: false
+    enabled: true
+    config:
+      strings:
+      - legacy
+      - WIP
   eslint:
     enabled: true
 ratings:
@@ -8,6 +12,7 @@ ratings:
     - "**.js"
 exclude_paths:
 - "**/*.md"
+- ".codeclimate.yml"
 - "Dockerfile"
 - "bin/fixme"
 - "tests/**"
