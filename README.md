@@ -26,9 +26,10 @@ You can specify what strings to match by adding a `strings` key in your
 engines:
   fixme:
     enabled: true
-    strings:
-    - FIXME
-    - CUSTOM
+    config:
+      strings:
+      - FIXME
+      - CUSTOM
 ```
 
 **NOTE**: values specified here *override* the defaults, they are not
