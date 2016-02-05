@@ -10,4 +10,4 @@ exclude_paths:
 - "**/*.md"
 - "Dockerfile"
 - "bin/fixme"
-- "tests/**"
+- "test/**"
