@@ -1,6 +1,5 @@
-FROM node
-
-MAINTAINER Michael R. Bernstein
+FROM node:5.5-slim
+MAINTAINER Michael R. Bernstein <mrb@codeclimate.com>
 
 WORKDIR /usr/src/app/
 
