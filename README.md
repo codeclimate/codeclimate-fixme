@@ -1,11 +1,12 @@
 # Code Climate FIXME Engine
 
-`codeclimate-fixme` is a Code Climate engine that finds comments in your code which match the following strings:
+`codeclimate-fixme` is a Code Climate engine that performs a case-sensitive search for the following strings in your project:
 
 * `TODO`
 * `FIXME`
 * `HACK`
 * `BUG`
+* `XXX`
 
 These strings are things you should fix now, not later.
 
