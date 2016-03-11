@@ -25,7 +25,7 @@ describe("fixMe", function(){
 
           expect(capturedText).to.eq('{"type":"issue","check_name":"TODO","description":"TODO found","categories":["Bug Risk"],"location":{"path":"test/fixtures/code/src/code/test.js","lines":{"begin":5,"end":5}}}\0\n');
           done();
-      }, 10);
+      }, 100);
     });
   });
 
