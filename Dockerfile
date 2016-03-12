@@ -15,4 +15,7 @@ USER app
 
 COPY . /usr/src/app
 
+VOLUME /code
+WORKDIR /code
+
 CMD ["/usr/src/app/bin/fixme"]
