@@ -6,4 +6,4 @@ image:
 	docker build --rm -t $(IMAGE_NAME) .
 
 test: image
-	docker run --rm $(IMAGE_NAME) npm test
+	docker run --rm $(IMAGE_NAME) sh -c "cd /usr/src/app && npm test"
