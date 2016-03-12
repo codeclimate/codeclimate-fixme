@@ -28,13 +28,4 @@ describe("fixMe", function(){
       }, 10);
     });
   });
-
-  describe('#formatPath(path)', function(){
-    it('returns correct filename for files with /code in them', function(){
-      var path = '/code/src/javascripts/code/test.js',
-          formatted = engine.formatPath(path);
-
-      expect(formatted).to.eq('src/javascripts/code/test.js');
-    });
-  });
 });
