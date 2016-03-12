@@ -6,7 +6,8 @@ machine:
     PRIVATE_REGISTRY: us.gcr.io/code_climate
 
 dependencies:
-  override: #no-op
+  override:
+    - echo "skip dependency installation"
 
 test:
   override:

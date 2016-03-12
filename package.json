@@ -3,13 +3,9 @@
   "description": "Static analysis tool that finds FIXME, TODO, BUG, etc. comments in your code.",
   "version": "0.0.1",
   "main": "./lib/fix-me.js",
-  "dependencies": {
-    "glob": "6.0.1"
-  },
   "devDependencies": {
     "chai": "3.4.1",
-    "mocha": "2.3.3",
-    "intercept-stdout": "0.1.2"
+    "mocha": "2.3.3"
   },
   "scripts": {
     "test": "mocha"
