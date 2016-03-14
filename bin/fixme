@@ -1,6 +1,10 @@
 #!/usr/bin/env node
 
+var fs = require('fs');
 var FixMe = require('../lib/fix-me');
-var fixMe = new FixMe();
+var config;
 
-fixMe.runEngine();
+fs.readFile('/config.json', function(err, data) {
+  if (!err) config = JSON.parse(data);
+  new FixMe().run(config)
+});
