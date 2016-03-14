@@ -1,7 +1,8 @@
+/* global define, it, describe, context */
+
 var expect = require('chai').expect;
-var stream = require('stream');
-var util = require('util');
 var FixMe = require('../lib/fix-me.js');
+var IssueBuffer = require('./support/issue_buffer');
 
 describe("fixMe", function(){
   describe("#run(engineConfig)", function() {
@@ -12,7 +13,7 @@ describe("fixMe", function(){
         engine.find = function(_, strings) {
           expect(strings).to.have.members(['BUG', 'FIXME', 'HACK', 'TODO', 'XXX']);
           done();
-        }
+        };
 
         engine.run();
       });
@@ -23,7 +24,7 @@ describe("fixMe", function(){
         engine.find = function(paths) {
           expect(paths).to.have.members(['./']);
           done();
-        }
+        };
 
         engine.run();
       });
@@ -36,9 +37,9 @@ describe("fixMe", function(){
       };
 
       engine.find = function(paths) {
-        expect(paths).to.have.members(['test/fixtures/code/src/code/test.js'])
+        expect(paths).to.have.members(['test/fixtures/code/src/code/test.js']);
         done();
-      }
+      };
 
       engine.run(config);
     });
@@ -54,7 +55,7 @@ describe("fixMe", function(){
       engine.find = function(_, strings) {
         expect(strings).to.have.members(['SUP']);
         done();
-      }
+      };
 
       engine.run(engineConfig);
     });
@@ -68,7 +69,7 @@ describe("fixMe", function(){
       engine.find(['test/fixtures/file.js'], ['TODO', 'SUP'], function() {
         var issues = buf.toIssues();
 
-        expect(issues.length).to.eq(2)
+        expect(issues.length).to.eq(2);
 
         expect(issues[0].categories).to.have.members(['Bug Risk']);
         expect(issues[0].check_name).to.eq('TODO');
@@ -142,20 +143,3 @@ describe("fixMe", function(){
     });
   });
 });
-
-function IssueBuffer() {
-  this._data = "";
-  stream.Writable.call(this);
-}
-
-util.inherits(IssueBuffer, stream.Writable);
-
-IssueBuffer.prototype._write = function(chunk, encoding, done) {
-  this._data += chunk.toString();
-  done();
-};
-
-IssueBuffer.prototype.toIssues = function() {
-  if (this._data.length === 0) return [];
-  return this._data.slice(0, -1).split('\0').map((json) => JSON.parse(json));
-}
