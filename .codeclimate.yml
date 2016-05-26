@@ -9,3 +9,7 @@ ratings:
 exclude_paths:
 - "node_modules/"
 - "test/fixtures/"
+
+# TODO - test1
+# FIXME - test2
+# TODO - test3
