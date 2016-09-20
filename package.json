@@ -1,6 +1,6 @@
 {
-  "name": "codeclimate-fixme",
-  "description": "Static analysis tool that finds FIXME, TODO, BUG, etc. comments in your code.",
+  "name": "fixme",
+  "description": "Static analysis tool that finds FIXME, XXX, Hack, etc. comments in your code.",
   "version": "0.0.1",
   "main": "./lib/fix-me.js",
   "devDependencies": {
@@ -18,11 +18,10 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/codeclimate/codeclimate-fixme.git"
+    "url": "https://github.com/sideci/fixme.git"
   },
   "keywords": [
-    "fixme",
-    "codeclimate"
+    "fixme"
   ],
   "engines": {
     "node": ">=0.10"
