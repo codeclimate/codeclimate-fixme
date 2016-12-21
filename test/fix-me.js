@@ -59,6 +59,18 @@ describe("fixMe", function(){
 
       engine.run(engineConfig);
     });
+
+    it('ignores .codeclimate.yml', function(done) {
+      var buf = new IssueBuffer();
+      var engine = new FixMe(buf);
+
+      engine.find(['test/fixtures/'], ['URGENT'], function() {
+        var issues = buf.toIssues();
+        expect(issues.length).to.eq(1);
+        expect(issues[0].location.path).to.eq('test/fixtures/urgent.js');
+        done();
+      });
+    });
   });
 
   describe('#find(paths, strings)', function() {
