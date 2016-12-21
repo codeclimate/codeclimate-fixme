@@ -1,4 +1,5 @@
 engines:
+  # URGENT: enable duplication engine
   fixme:
     enabled: true
     config:
