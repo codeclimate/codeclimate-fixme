@@ -4,10 +4,6 @@ var fs = require('fs');
 var FixMe = require('../lib/fix-me');
 var config;
 
-fs.readFile('/config.json', function(err, data) {
-  if (!err) {
-    config = JSON.parse(data);
-  }
+new FixMe().run();
 
-  new FixMe().run(config)
-});
+
