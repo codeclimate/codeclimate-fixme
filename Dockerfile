@@ -1,4 +1,4 @@
-FROM node:5.5-slim
+FROM node:6-alpine
 MAINTAINER Michael R. Bernstein <mrb@codeclimate.com>
 
 WORKDIR /usr/src/app/
@@ -8,7 +8,7 @@ COPY package.json /usr/src/app/
 
 RUN npm install
 
-RUN useradd -u 9000 -r -s /bin/false app
+RUN adduser -u 9000 -S -s /bin/false app
 USER app
 
 COPY . /usr/src/app
