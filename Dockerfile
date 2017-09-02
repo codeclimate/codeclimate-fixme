@@ -6,7 +6,8 @@ WORKDIR /usr/src/app/
 COPY engine.json /
 COPY package.json /usr/src/app/
 
-RUN npm install
+# Install dependencies:
+RUN apk add --no-cache --virtual .run-deps grep && npm install
 
 RUN adduser -u 9000 -S -s /bin/false app
 USER app
