@@ -1,5 +1,4 @@
 FROM node:6-alpine
-MAINTAINER Michael R. Bernstein <mrb@codeclimate.com>
 
 WORKDIR /usr/src/app/
 
