@@ -1,17 +1,18 @@
-FROM node:5.5-slim
-MAINTAINER Michael R. Bernstein <mrb@codeclimate.com>
+FROM node:6-alpine
+LABEL maintainer="Code Climate <hello@codeclimate.com>"
 
 WORKDIR /usr/src/app/
 
 COPY engine.json /
-COPY package.json /usr/src/app/
+COPY package.json ./
 
-RUN npm install
+# Install dependencies:
+RUN apk add --no-cache --virtual .run-deps grep && npm install
 
-RUN useradd -u 9000 -r -s /bin/false app
+RUN adduser -u 9000 -S -s /bin/false app
 USER app
 
-COPY . /usr/src/app
+COPY . ./
 
 VOLUME /code
 WORKDIR /code
