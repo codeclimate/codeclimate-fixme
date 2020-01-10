@@ -15,7 +15,7 @@ These strings are things you should fix now, not later.
 ### Installation & Usage
 
 1. If you haven't already, [install the Code Climate CLI](https://github.com/codeclimate/codeclimate).
-2. Run `codeclimate engines:enable fixme`. This command both installs the engine and enables it in your `.codeclimate.yml` file.
+2. Run `codeclimate engines:install fixme`. This command both installs the engine and enables it in your `.codeclimate.yml` file.
 3. You're ready to analyze! Browse into your project's folder and run `codeclimate analyze`.
 
 ### Configuration
