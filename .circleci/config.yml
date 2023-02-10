@@ -4,8 +4,6 @@ jobs:
   build:
     machine:
       docker_layer_caching: true
-    environment:
-      CLOUDSDK_CORE_DISABLE_PROMPTS: 1
     working_directory: ~/codeclimate/codeclimate-fixme
     steps:
       - checkout
