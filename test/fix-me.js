@@ -65,14 +65,14 @@ describe("fixMe", function(){
       var engine = new FixMe(buf);
 
       engine.find(['test/fixtures/'], ['URGENT'], function() {
-        var issues = buf.toIssues();
-        console.log("testing why this fails")
-        console.log(issues)
+        var issues = buf.toIssues();        
+        var issue_paths = issues.map(issue => issue.location.path);
+        var cc_config_issue = issues.find(issue => issue.location.path === 'test/fixtures/.codeclimate.yml');
+        
+        expect(cc_config_issue).to.exist;
         expect(issues.length).to.eq(2);
-
-        expect(issues[0].location.path).to.eq('test/fixtures/.codeclimate.yml');
-        expect(issues[0].location.lines.begin).to.eq(2);
-        expect(issues[1].location.path).to.eq('test/fixtures/urgent.js');
+        expect(issue_paths).to.have.members(['test/fixtures/.codeclimate.yml', 'test/fixtures/urgent.js']);
+        expect(cc_config_issue.location.lines.begin).to.eq(2);
         done();
       });
     });
