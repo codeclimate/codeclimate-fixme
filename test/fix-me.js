@@ -66,6 +66,8 @@ describe("fixMe", function(){
 
       engine.find(['test/fixtures/'], ['URGENT'], function() {
         var issues = buf.toIssues();
+        console.log("testing why this fails")
+        console.log(issues)
         expect(issues.length).to.eq(2);
 
         expect(issues[0].location.path).to.eq('test/fixtures/.codeclimate.yml');
