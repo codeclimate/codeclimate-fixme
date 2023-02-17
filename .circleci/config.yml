@@ -1,0 +1,53 @@
+version: 2.1
+
+jobs:
+  build:
+    machine:
+      docker_layer_caching: true
+    working_directory: ~/codeclimate/codeclimate-fixme
+    steps:
+      - checkout
+      - run:
+          name: Build
+          command: make image
+      - run:
+          name: Test
+          command: make test
+
+  release_images:
+    machine:
+      docker_layer_caching: true
+    working_directory: ~/codeclimate/codeclimate-fixme
+    steps:
+      - checkout
+      - run:
+          name: Validate owner
+          command: |
+            if [ "$CIRCLE_PROJECT_USERNAME" -ne "codeclimate" ]
+            then
+              echo "Skipping release for non-codeclimate branches"
+              circleci step halt
+            fi
+      - run: make image
+      - run: echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+      - run:
+          name: Push image to Dockerhub
+          command: |
+            make release RELEASE_TAG="b$CIRCLE_BUILD_NUM"
+            make release RELEASE_TAG="$(echo $CIRCLE_BRANCH | grep -oP 'channel/\K[\w\-]+')"
+workflows:
+  version: 2
+  build_deploy:
+    jobs:
+      - build
+      - release_images:
+          context: Quality
+          requires:
+            - build
+          filters:
+            branches:
+              only: /master|channel\/[\w-]+/
+
+notify:
+  webhooks:
+    - url: https://cc-slack-proxy.herokuapp.com/circle
