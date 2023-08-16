@@ -1,8 +1,8 @@
 /* global define, it, describe, context */
 
 var expect = require('chai').expect;
-var FixMe = require('../lib/fix-me.js');
-var IssueBuffer = require('./support/issue_buffer');
+var FixMe = require('../lib/fixme.js');
+var IssueBuffer = require('./support/issue_buffer.js');
 
 describe("fixMe", function(){
   describe("#run(engineConfig)", function() {

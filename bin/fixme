@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 var fs = require('fs');
-var FixMe = require('../lib/fix-me');
+var FixMe = require('../lib/fixme');
 var config;
 
 fs.readFile('/config.json', function(err, data) {
@@ -9,5 +9,6 @@ fs.readFile('/config.json', function(err, data) {
     config = JSON.parse(data);
   }
 
-  new FixMe().run(config)
+  var fixer = new FixMe();
+  fixer.run(config);
 });
