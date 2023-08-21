@@ -1,7 +1,7 @@
 {
   "name": "codeclimate-fixme",
   "description": "Static analysis tool that finds FIXME, TODO, BUG, etc. comments in your code.",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "main": "./lib/fixme.js",
   "bin": {
     "fixme": "./bin/fixme"
