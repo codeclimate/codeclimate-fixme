@@ -1,43 +1,31 @@
-# Code Climate FIXME Engine
+# Try Qlty today, the newest edition of Code Climate Quality.
+#### This repository is deprecated and archived.
 
-`codeclimate-fixme` is a Code Climate engine that performs a case-sensitive search for the following strings in your project:
+This is a repository for a Code Climate Quality plugin which is packaged as a Docker image.
 
-* `TODO`
-* `FIXME`
-* `HACK`
-* `BUG`
-* `XXX`
+Code Climate Quality is being replaced with the new [Qlty](qlty.sh) code quality platform. Qlty uses a new plugin system which does not require packaging plugins as Docker images.
 
-These strings are things you should fix now, not later.
+As a result, this repository is no longer maintained and has been archived.
 
-`codeclimate-fixme` is also very simple, and is intended to provide a `Hello World` like template for Code Climate Platform engine authors. It is implemented in JavaScript as an NPM package.
+## Advantages of Qlty plugins
+The new Qlty plugins system provides key advantages over the older, Docker-based plugin system:
 
-### Installation & Usage
+- Linting runs much faster without the overhead of virtualization
+- New versions of linters are available immediately without needing to wait for a re-packaged release
+- Plugins can be run with any arbitrary extensions (like extra rules and configs) without requiring pre-packaging
+- Eliminates security issues associated with exposing a Docker daemon
 
-1. If you haven't already, [install the Code Climate CLI](https://github.com/codeclimate/codeclimate).
-2. Run `codeclimate engines:enable fixme`. This command both installs the engine and enables it in your `.codeclimate.yml` file.
-3. You're ready to analyze! Browse into your project's folder and run `codeclimate analyze`.
+## Try out Qlty today free
 
-### Configuration
+[Qlty CLI](https://docs.qlty.sh/cli/quickstart) is the fastest linter and auto-formatter for polyglot teams. It is completely free and available for Mac, Windows, and Linux.
 
-You can specify what strings to match by adding a `strings` key in your
-`.codeclimate.yml`:
+  - Install Qlty CLI:
+`
+curl https://qlty.sh | sh # Mac or Linux
+`
+or ` <windows install line> `
 
-```yaml
-engines:
-  fixme:
-    enabled: true
-    config:
-      strings:
-      - FIXME
-      - CUSTOM
-```
+[Qlty Cloud](https://docs.qlty.sh/cloud/quickstart) is a full code health platform for integrating code quality into development team workflows. It is free for unlimited private contributors.
+  - [Try Qlty Cloud today](https://docs.qlty.sh/cloud/quickstart)
 
-**NOTE**: values specified here *override* the defaults, they are not
-*additional* strings to match.
-
-### Need help?
-
-For help with `codeclimate-fixme`, please open an issue on this repository.
-
-If you're running into a Code Climate issue, first look over this project's [GitHub Issues](https://github.com/codeclimate/codeclimate-fixme/issues), as your question may have already been covered. If not, [go ahead and open a support ticket with us](https://codeclimate.com/help).
+**Note**: For existing customers of Quality, please see our [Migration Guide](https://docs.qlty.sh/migration/guide) for more information and resources.
